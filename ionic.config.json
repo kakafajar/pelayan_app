@@ -1,0 +1,7 @@
+{
+  "name": "pelayan",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
