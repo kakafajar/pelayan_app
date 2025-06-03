@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router, RouteReuseStrategy } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +10,13 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(
+    private navCtrl: NavController,
+    private router : Router
+  ) {}
+
+ bukaLayanan(jenis: string) {
+    this.navCtrl.navigateForward(`/layanan/${jenis}`)
+  }
 
 }

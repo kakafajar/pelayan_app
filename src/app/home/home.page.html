@@ -20,61 +20,70 @@
       <ion-button size="small" fill="outline" class="promo-button">Lihat Detail</ion-button>
     </div>
 
-<h3 class="section-title">Pilih Layanan</h3>
-<div class="service-list">
-  <ion-card class="service-card blue">
-    <img src="https://img.icons8.com/color/48/qr-code.png" class="service-img-icon" />
-    <div class="text-info">
-      <h4>Scanner QR</h4>
-      <p>Scan QR code meja pelanggan</p>
-    </div>
-    <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-  </ion-card>
+    <!-- Layanan -->
+    <h3 class="section-title">Pilih Layanan</h3>
+    <div class="service-list">
 
-  <ion-card class="service-card green">
-    <img src="https://img.icons8.com/color/48/restaurant-table.png" class="service-img-icon" />
-    <div class="text-info">
-      <h4>Dine In</h4>
-      <p>Layani pelanggan makan di tempat</p>
-    </div>
-    <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-  </ion-card>
+      <!-- Scanner -->
+      <ion-card class="service-card blue">
+        <img src="https://img.icons8.com/color/48/qr-code.png" class="service-img-icon" />
+        <div class="text-info">
+          <h4>Scanner QR</h4>
+          <p>Scan QR code meja pelanggan</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </ion-card>
 
-  <ion-card class="service-card orange">
-    <img src="https://img.icons8.com/color/48/take-away-food.png" class="service-img-icon" />
-    <div class="text-info">
-      <h4>Take Away</h4>
-      <p>Pesanan untuk dibawa pulang</p>
-    </div>
-    <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-  </ion-card>
-</div>
+      <!-- Dine In -->
+      <ion-card class="service-card green" (click)="bukaLayanan('dinein')">
+        <img src="https://img.icons8.com/color/48/restaurant-table.png" class="service-img-icon" />
+        <div class="text-info">
+          <h4>Dine In</h4>
+          <p>Layani pelanggan makan di tempat</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </ion-card>
 
+      <!-- Take Away -->
+      <ion-card class="service-card orange" (click)="bukaLayanan('takeaway')">
+        <img src="https://img.icons8.com/color/48/take-away-food.png" class="service-img-icon" />
+        <div class="text-info">
+          <h4>Take Away</h4>
+          <p>Pesanan untuk dibawa pulang</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </ion-card>
+
+    </div>
 
   </div>
 
-  <!-- Tab Bar -->
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="home">
-        <ion-icon name="home-outline"></ion-icon>
-        <ion-label>Home</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="pesanan">
-        <ion-icon name="clipboard-outline"></ion-icon>
-        <ion-label>Pesanan</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="menu">
-        <ion-icon name="book-outline"></ion-icon>
-        <ion-label>Menu</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="profil">
-        <ion-icon name="person-outline"></ion-icon>
-        <ion-label>Profil</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  
 </ion-content>
+
+
+<ion-footer>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button routerLink="/home">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Home</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/order">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <ion-label>Order</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/profil">
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button routerLink="/login">
+      <ion-icon name="log-out-outline"></ion-icon>
+      <ion-label>Logout</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-footer>
+
+
