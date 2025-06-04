@@ -11,23 +11,33 @@
       </ion-button>
     </div>
 
-    <!-- Banner -->
-    <div class="promo-card">
-      <div class="banner-text">
-        <h4>Selamat Datang!</h4>
-        <p>{{ jenisLayanan === 'dinein' ? 'Pilih meja untuk memulai pesanan' : 'Pilih pesanan untuk dibawa pulang' }}</p>
-      </div>
-      <img src="/assets/imgs/{{ jenisLayanan }}.png" class="banner-img" />
-    </div>
 
-    <!-- Pilih Meja / Pesanan -->
-    <h3 class="section-title">{{ jenisLayanan === 'dinein' ? 'Pilih Meja' : 'Pilih Pesanan' }}</h3>
-    <div class="meja-grid">
-      <div class="meja-card" *ngFor="let meja of daftarMeja" [ngClass]="meja.status">
-        <div class="meja-nomor">{{ meja.nomor }}</div>
-        <span class="status-label">{{ meja.status }}</span>
-      </div>
-    </div>
+<!-- Banner Selamat Datang -->
+<div class="welcome-banner">
+  <div class="text">
+    <h2>Selamat Datang!</h2>
+    <p>{{ jenisLayanan === 'dinein' ? 'Pilih meja untuk memulai pesanan' : 'Pilih pesanan untuk dibawa pulang' }}</p>
+  </div>
+  <div class="icon-wrapper">
+    <img [src]="'/assets/imgs/' + jenisLayanan + '.png'" alt="icon" />
+  </div>
+</div>
+
+
+<div class="meja-grid">
+  <div
+    class="meja-card"
+    *ngFor="let meja of daftarMeja"
+    [ngClass]="[meja.status, selectedMeja === meja.nomor ? 'selected' : '']"
+    (click)="onSelectMeja(meja)"
+  >
+    <div class="meja-nomor">{{ meja.nomor }}</div>
+    <span class="status-label">{{ meja.status }}</span>
+  </div>
+</div>
+
+
+
 
     <!-- Keterangan Status -->
     <div class="keterangan-status">
@@ -45,7 +55,7 @@
       </div>
     </div>
 
-    <ion-button expand="block" class="btn-tambah">
+    <ion-button expand="block" class="btn-tambah" (click)="tambahMeja()">
       <ion-icon name="add-outline"></ion-icon>
       Tambah {{ jenisLayanan === 'dinein' ? 'Meja' : 'Pesanan' }}
     </ion-button>

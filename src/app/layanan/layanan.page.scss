@@ -56,48 +56,114 @@
     margin-bottom: 4px;
   }
 
-  .meja-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+  .meja-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 4px;
 
-    .meja-card {
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  .section-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 8px 0;
+  }
 
-      .meja-nomor {
-        font-size: 16px;
-      }
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+}
 
-      .status-label {
-        font-size: 12px;
-        margin-top: 4px;
-      }
+.meja-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+}
 
-      &.Tersedia {
-        background-color: #d4edda;
-        color: #155724;
-      }
+.meja-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-      &.Reservasi {
-        background-color: #fff3cd;
-        color: #856404;
-      }
+  .meja-nomor {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 8px;
+  }
 
-      &.Terisi {
-        background-color: #f8d7da;
-        color: #721c24;
-      }
+  .meja-status {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: capitalize;
+  }
 
-      &.Cleaning {
-        background-color: #e2e3f3;
-        color: #383d8c;
-      }
+  &.tersedia {
+    .meja-nomor {
+      background-color: #28a745;
+    }
+
+    .meja-status {
+      background-color: #e3fcef;
+      color: #28a745;
     }
   }
+
+  &.reservasi {
+    .meja-nomor {
+      background-color: #ffc107;
+    }
+
+    .meja-status {
+      background-color: #fff7e0;
+      color: #ffc107;
+    }
+  }
+
+  &.terisi {
+    .meja-nomor {
+      background-color: #dc3545;
+    }
+
+    .meja-status {
+      background-color: #fde2e4;
+      color: #dc3545;
+    }
+  }
+
+  &.cleaning {
+    .meja-nomor {
+      background-color: #6f42c1;
+    }
+
+    .meja-status {
+      background-color: #ede8fb;
+      color: #6f42c1;
+    }
+  }
+}
+
+.meja-card.selected {
+  border: 2px solid #ff6b00;
+  box-shadow: 0 0 5px rgba(255, 107, 0, 0.4);
+}
+
+
 
   .keterangan-status {
     display: flex;
@@ -141,4 +207,49 @@
     font-weight: bold;
     --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
+
+  .welcome-banner {
+  background: linear-gradient(135deg, #ff7a3e, #ff5e62); // gradasi oranye
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+
+  .text {
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.9;
+      margin: 0;
+    }
+  }
+
+  .icon-wrapper {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    min-height: 50px;
+
+    img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: brightness(1000%);
+    }
+  }
+}
+
 }

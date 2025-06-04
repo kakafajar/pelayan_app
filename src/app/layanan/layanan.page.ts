@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -21,15 +21,37 @@ export class LayananPage implements OnInit {
     { nomor: '06', status: 'cleaning' }
   ];
 
-
+    selectedMeja: string | null = null;
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.jenisLayanan = params['layanan'] || 'dinein';
-    });
+    this.jenisLayanan = this.route.snapshot.paramMap.get('jenis')!;
   }
+
+    pilihMeja(meja: any) {
+    if (meja.status === 'tersedia') {
+      this.router.navigate(['/menu'], { queryParams: { meja: meja.nomor } });
+    }
+  }
+
+    onSelectMeja(meja: any) {
+    if (meja.status === 'tersedia') {
+      this.selectedMeja = meja.nomor;
+    }
+  }
+
+tambahMeja() {
+    if (this.selectedMeja) {
+      this.router.navigate(['/menu'], {
+        queryParams: { meja: this.selectedMeja }
+      });
+    } else {
+      alert('Silakan pilih meja terlebih dahulu');
+    }
+  }
+
 
 }

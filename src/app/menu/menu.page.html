@@ -1,0 +1,57 @@
+<ion-content class="menu-content" fullscreen>
+
+  <!-- Header -->
+  <div class="menu-header">
+    <ion-back-button defaultHref="/home" slot="start"></ion-back-button>
+    <div class="header-title">
+      <h2>Menu Makanan</h2>
+      <p>Meja {{ nomorMeja }}</p>
+    </div>
+    <ion-button fill="clear" slot="end">
+      <ion-icon name="cart-outline"></ion-icon>
+      <ion-badge *ngIf="jumlahDipilih > 0">{{ jumlahDipilih }}</ion-badge>
+    </ion-button>
+  </div>
+
+  <!-- Search -->
+  <ion-searchbar placeholder="Cari menu..." show-clear-button="focus"></ion-searchbar>
+
+  <!-- Tabs -->
+  <ion-segment [(ngModel)]="kategoriDipilih" class="menu-tabs">
+    <ion-segment-button value="makanan">Makanan</ion-segment-button>
+    <ion-segment-button value="minuman">Minuman</ion-segment-button>
+    <ion-segment-button value="dessert">Dessert</ion-segment-button>
+    <ion-segment-button value="snack">Snack</ion-segment-button>
+  </ion-segment>
+
+  <!-- Menu List -->
+  <div class="menu-list">
+    <div class="menu-item" *ngFor="let item of daftarMenu">
+      <div class="item-left">
+        <ion-icon name="restaurant-outline" class="icon-gray"></ion-icon>
+      </div>
+      <div class="item-content">
+        <h4>{{ item.nama }}</h4>
+        <p>{{ item.deskripsi }}</p>
+        <div class="harga">Rp {{ item.harga }}</div>
+      </div>
+      <div class="item-action">
+        <ion-button fill="clear" size="small" (click)="tambahKeKeranjang(item)">
+          <ion-icon name="add-circle" color="primary"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Summary -->
+  <div class="cart-summary" *ngIf="jumlahDipilih > 0">
+    <div class="info">
+      <p>{{ jumlahDipilih }} item dipilih</p>
+      <p class="total">Total: <strong>Rp {{ totalHarga }}</strong></p>
+    </div>
+    <ion-button color="primary" (click)="lanjutKeCheckout()">
+      Lanjut <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+</ion-content>

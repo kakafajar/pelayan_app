@@ -18,7 +18,11 @@ const routes: Routes = [
   {
     path: 'layanan/:jenis',
     loadChildren: () => import('./layanan/layanan.module').then( m => m.LayananPageModule)
+  },  {
+    path: 'menu',
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },
+
 ];
 
 @NgModule({
