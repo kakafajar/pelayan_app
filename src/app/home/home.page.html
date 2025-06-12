@@ -17,42 +17,54 @@
     <div class="promo-card">
       <h3>Promo Hari Ini!</h3>
       <p>Diskon 20% untuk semua menu makanan</p>
-      <ion-button size="small" fill="outline" class="promo-button">Lihat Detail</ion-button>
+      <ion-button size="small" fill="outline" class="promo-button" style="color: white; border-color: white;">Lihat Detail</ion-button>
     </div>
 
     <!-- Layanan -->
     <h3 class="section-title">Pilih Layanan</h3>
     <div class="service-list">
 
-      <!-- Scanner -->
-      <ion-card class="service-card blue">
-        <img src="https://img.icons8.com/color/48/qr-code.png" class="service-img-icon" />
-        <div class="text-info">
-          <h4>Scanner QR</h4>
-          <p>Scan QR code meja pelanggan</p>
-        </div>
-        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-      </ion-card>
+       <ion-card class="layanan-card reservasi">
+  <ion-item lines="none" button detail [routerLink]="['/dine-in','reservasi']">
+    <ion-avatar slot="start">
+      <div class="icon-wrapper" style="background-color: #FF9F0A;">
+        <ion-icon name="scan-outline"></ion-icon>
+      </div>
+    </ion-avatar>
+    <ion-label>
+      <h3>Scanner</h3>
+      <p>Pindai QR code</p>
+    </ion-label>
+  </ion-item>
+</ion-card>
 
-      <!-- Dine In -->
-      <ion-card class="service-card green" (click)="bukaLayanan('dinein')">
-        <img src="https://img.icons8.com/color/48/restaurant-table.png" class="service-img-icon" />
-        <div class="text-info">
-          <h4>Dine In</h4>
-          <p>Layani pelanggan makan di tempat</p>
-        </div>
-        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-      </ion-card>
+<ion-card class="layanan-card dinein">
+  <ion-item lines="none" button detail (click)="bukaLayanan('dinein')" >
+    <ion-avatar slot="start">
+      <div class="icon-wrapper" style="background-color: #34C759;">
+        <ion-icon name="restaurant-outline"></ion-icon>
+      </div>
+    </ion-avatar>
+    <ion-label>
+      <h3>Dine In</h3>
+      <p>Layani pelanggan makan di tempat</p>
+    </ion-label>
+  </ion-item>
+</ion-card>
 
-      <!-- Take Away -->
-      <ion-card class="service-card orange" (click)="bukaLayanan('takeaway')">
-        <img src="https://img.icons8.com/color/48/take-away-food.png" class="service-img-icon" />
-        <div class="text-info">
-          <h4>Take Away</h4>
-          <p>Pesanan untuk dibawa pulang</p>
-        </div>
-        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
-      </ion-card>
+<ion-card class="layanan-card takeaway">
+  <ion-item lines="none" button detail [routerLink]="['/dine-in','takeaway']">
+    <ion-avatar slot="start">
+      <div class="icon-wrapper" style="background-color: #FF9500;">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+      </div>
+    </ion-avatar>
+    <ion-label>
+      <h3>Take Away</h3>
+      <p>Pesanan untuk dibawa pulang</p>
+    </ion-label>
+  </ion-item>
+</ion-card>
 
     </div>
 

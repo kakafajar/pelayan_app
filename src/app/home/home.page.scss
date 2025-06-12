@@ -37,10 +37,11 @@
 }
 
 .promo-card {
-  background: #fceabb;
+  background: #FF9F0A;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
+  color: white;
 }
 
 .section-title {
@@ -88,4 +89,53 @@
 
 .service-card.orange {
   background-color: #fff3e0;
+}
+
+ .layanan-card {
+  --background: #fff;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  ion-item {
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+  }
+
+  ion-avatar {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon-wrapper {
+      border-radius: 12px;
+      padding: 10px;
+
+      ion-icon {
+        font-size: 22px;
+        color: #fff;
+      }
+    }
+  }
+
+  ion-label {
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0;
+      color: #000;
+    }
+
+    p {
+      font-size: 13px;
+      color: #666;
+      margin: 2px 0 0;
+    }
+  }
+
+  ion-icon[slot="end"] {
+    font-size: 20px;
+    color: #999;
+  }
 }

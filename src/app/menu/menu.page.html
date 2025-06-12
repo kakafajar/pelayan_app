@@ -1,3 +1,206 @@
+<style>
+  .custom-ion-card {
+   --background: #ff6b00;  
+           --color: white; 
+  }
+ .custom-minus {
+        --color: white;
+          --background: #ff6b00;   
+          --border-color: #ff6b00;
+ }
+
+ .custom-plus {
+  --color: white;
+  --background: #ff6b00;   
+  --border-color: #ff6b00;
+}
+
+
+.jumlah-tamu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      ion-label {
+        font-size: 14px;
+        color: #7d7d7d;
+      }
+
+      ion-buttons {
+        display: flex;
+        align-items: center;
+
+        ion-button {
+          --border-radius: 6px;
+          --padding-start: 8px;
+          --padding-end: 8px;
+          font-weight: bold;
+        }
+
+        ion-label {
+          font-size: 14px;
+          font-weight: bold;
+          padding: 0 10px;
+          color: #000;
+        }
+
+      }
+    }
+
+
+    ion-card {
+  &.informasi-pelanggan {
+    ion-card-header {
+      padding-bottom: 0;
+
+      ion-card-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+
+    ion-card-content {
+      padding-top: 0;
+    }
+
+    ion-item {
+      --background: transparent;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --min-height: 50px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    ion-label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    ion-input::part(native)::-webkit-input-placeholder {
+      font-weight: 150; /* Lebih tipis */
+      color: #e3e3e3;      /* Bisa sesuaikan warna placeholder */
+      font-size: 10px;
+    }
+
+    ion-input::part(native):-moz-placeholder {
+      font-weight: 150;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+    ion-input::part(native)::placeholder {
+      font-weight: 150;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+  }
+
+  
+}
+
+/* Kartu Item */
+ion-card-content {
+  padding: 12px;
+}
+
+ion-item {
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  box-shadow: none;
+  --background: transparent;
+}
+
+/* Label Nama dan Harga Item */
+ion-label h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+ion-label p {
+  font-size: 13px;
+  color: #888;
+  margin: 2px 0;
+}
+
+ion-label strong {
+  color: #000;
+}
+
+/* Tombol + dan - */
+ion-button.qty-button {
+  --background: #ff6b00;
+  --color: #fff;
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  margin: 0 6px;
+}
+
+/* Label jumlah (angka tengah) */
+ion-buttons ion-label {
+  font-weight: 500;
+  font-size: 14px;
+  width: 20px;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  line-height: 28px;
+  color: #000;
+}
+
+/* Tombol Trash (hapus) */
+ion-button[color="danger"] {
+  margin-left: 4px;
+}
+
+.nama-pelanggan {
+  font-size: 20px;
+}
+
+
+.metode-pembayaran {
+  ion-card-header {
+    padding-bottom: 0;
+  }
+
+  ion-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  ion-select {
+    font-weight: 500;
+    --placeholder-color: #aaa;
+  }
+
+  ion-label[position="stacked"] {
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+}
+
+
+
+</style>
+
 <ion-content class="menu-content" fullscreen>
 
   <!-- Header -->
@@ -14,10 +217,15 @@
   </div>
 
   <!-- Search -->
-  <ion-searchbar placeholder="Cari menu..." show-clear-button="focus"></ion-searchbar>
+  <ion-searchbar
+    placeholder="Cari menu..."
+    show-clear-button="focus"
+    (ionInput)="cariMenu($event)"
+    *ngIf="!showRincianPesanan">
+  </ion-searchbar>
 
   <!-- Tabs -->
-  <ion-segment [(ngModel)]="kategoriDipilih" class="menu-tabs">
+  <ion-segment [(ngModel)]="kategoriDipilih" class="menu-tabs" *ngIf="!showRincianPesanan">
     <ion-segment-button value="makanan">Makanan</ion-segment-button>
     <ion-segment-button value="minuman">Minuman</ion-segment-button>
     <ion-segment-button value="dessert">Dessert</ion-segment-button>
@@ -25,15 +233,15 @@
   </ion-segment>
 
   <!-- Menu List -->
-  <div class="menu-list">
-    <div class="menu-item" *ngFor="let item of daftarMenu">
+  <div class="menu-list" *ngIf="!showRincianPesanan">
+    <div class="menu-item" *ngFor="let item of filteredMenu">
       <div class="item-left">
         <ion-icon name="restaurant-outline" class="icon-gray"></ion-icon>
       </div>
       <div class="item-content">
-        <h4>{{ item.nama }}</h4>
-        <p>{{ item.deskripsi }}</p>
-        <div class="harga">Rp {{ item.harga }}</div>
+        <h4>{{ item.name }}</h4>
+        <p>{{ item.description }}</p>
+        <div class="harga">Rp {{ item.price | number:'1.0-0' }}</div>
       </div>
       <div class="item-action">
         <ion-button fill="clear" size="small" (click)="tambahKeKeranjang(item)">
@@ -44,14 +252,107 @@
   </div>
 
   <!-- Cart Summary -->
-  <div class="cart-summary" *ngIf="jumlahDipilih > 0">
+  <div class="cart-summary" *ngIf="jumlahDipilih > 0 && !showRincianPesanan">
     <div class="info">
       <p>{{ jumlahDipilih }} item dipilih</p>
-      <p class="total">Total: <strong>Rp {{ totalHarga }}</strong></p>
+      <p class="total">Total: <strong>Rp {{ totalHarga | number:'1.0-0' }}</strong></p>
     </div>
     <ion-button color="primary" (click)="lanjutKeCheckout()">
       Lanjut <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
     </ion-button>
   </div>
 
+  <!-- Rincian Pesanan -->
+  <ng-container *ngIf="showRincianPesanan">
+
+    <!-- Header Order -->
+    <ion-card class="custom-ion-card">
+      <ion-card-content class="order-header">
+        <div class="order-id">Order #001234</div>
+        <div class="order-info">Senin, 15 Jan 2024 • 14:30</div>
+        <ion-badge color="warning">DRAFT</ion-badge>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Informasi Pelanggan -->
+<ion-card class="informasi-pelanggan">
+  <ion-card-header>
+    <ion-card-title>Informasi Pelanggan</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label class="nama-pelanggan" position="stacked">Nama Pelanggan</ion-label>
+      <ion-input placeholder="Masukkan nama pelanggan" [(ngModel)]="namaPelanggan"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none" class="jumlah-tamu">
+      <ion-label>Jumlah Tamu</ion-label>
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="outline" class="custom-minus" (click)="ubahJumlahTamu(-1)" [disabled]="jumlahTamu <= 1">-</ion-button>
+        <ion-label class="ion-padding-horizontal">{{ jumlahTamu }}</ion-label>
+        <ion-button size="small" fill="outline" class="custom-plus" (click)="ubahJumlahTamu(1)">+</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+
+<!-- Metode Pembayaran -->
+<ion-card class="metode-pembayaran">
+  <ion-card-header>
+    <ion-card-title>Metode Pembayaran</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="stacked">Pilih Metode</ion-label>
+      <ion-select placeholder="Pilih metode pembayaran" [(ngModel)]="metodePembayaran">
+        <ion-select-option value="tunai">Tunai</ion-select-option>
+        <ion-select-option value="qris">QRIS</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+
+
+
+    <!-- Item Pesanan -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Item Pesanan</ion-card-title>
+        <ion-button fill="clear" size="small" color="primary" slot="end" (click)="kembaliKeMenu()">+ Tambah Item</ion-button>
+      </ion-card-header>
+      <ion-card-content>
+       <ion-item *ngFor="let item of keranjang">
+  <ion-label>
+    <h3>{{ item.name }}</h3>
+    <p>Rp {{ item.price | number:'1.0-0' }} × {{ item.jumlah }}</p>
+    <p><strong>Rp {{ (item.price * item.jumlah) | number:'1.0-0' }}</strong></p>
+  </ion-label>
+  <ion-buttons slot="end">
+    <ion-button size="small" fill="solid" class="qty-button"
+      (click)="ubahJumlah(item, -1)" [disabled]="item.jumlah <= 1">–</ion-button>
+    
+    <ion-label>{{ item.jumlah }}</ion-label>
+
+    <ion-button size="small" fill="solid" class="qty-button"
+      (click)="ubahJumlah(item, 1)">+</ion-button>
+
+    <ion-button fill="clear" color="danger" (click)="hapusItem(item)">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tombol Aksi -->
+    <ion-footer class="ion-padding">
+      <ion-button expand="block" color="medium" (click)="batalkanPesanan()">
+        Batalkan Pesanan
+      </ion-button>
+      <ion-button expand="block" color="primary" (click)="simpanPesanan()">
+        Simpan & Lanjut
+      </ion-button>
+    </ion-footer>
+  </ng-container>
 </ion-content>
