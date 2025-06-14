@@ -19,4 +19,9 @@ export class HomePage {
     this.navCtrl.navigateForward(`/layanan/${jenis}`)
   }
 
+  bukaNotifikasi() {
+  this.router.navigate(['/konfirmasi']);
+}
+
+
 }

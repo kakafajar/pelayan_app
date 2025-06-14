@@ -22,6 +22,14 @@ const routes: Routes = [
     path: 'menu',
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },
+  {
+    path: 'konfirmasi',
+    loadChildren: () => import('./konfirmasi/konfirmasi.module').then( m => m.KonfirmasiPageModule)
+  },
+  {
+    path: 'pesanan',
+    loadChildren: () => import('./pesanan/pesanan.module').then( m => m.PesananPageModule)
+  },
 
 ];
 

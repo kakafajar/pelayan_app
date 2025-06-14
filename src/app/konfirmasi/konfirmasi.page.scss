@@ -1,0 +1,13 @@
+.barcode-container {
+  margin-top: 20px;
+
+  img {
+    max-width: 150px;
+  }
+
+  p {
+    margin-top: 8px;
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}

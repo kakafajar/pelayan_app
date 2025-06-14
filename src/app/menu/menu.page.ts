@@ -170,6 +170,9 @@ async simpanPesanan() {
 
   await toast.present();
 
+    // Simpan ke localStorage
+  localStorage.setItem('pesananTerakhir', JSON.stringify(dataPesanan));
+
   // Navigasi ke halaman konfirmasi sambil mengirim data (optional: stringify jika objek besar)
   this.router.navigate(['/konfirmasi'], {
     queryParams: {
@@ -180,6 +183,7 @@ async simpanPesanan() {
     state: { pesanan: dataPesanan } // cara kirim full object
   });
 }
+
 
 
 }

@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pesanan Selesai</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="daftarPesanan.length > 0; else kosong">
+  <ion-card *ngFor="let pesanan of daftarPesanan">
+    <ion-card-header>
+      <ion-card-title>Pesanan Meja {{ pesanan.meja }}</ion-card-title>
+      <ion-badge color="success">SELESAI</ion-badge>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Nama:</strong> {{ pesanan.nama }}</p>
+      <p><strong>Jumlah Tamu:</strong> {{ pesanan.jumlahTamu }}</p>
+      <p><strong>Metode:</strong> {{ pesanan.metode }}</p>
+      <p><strong>Total:</strong> Rp {{ pesanan.total | number:'1.0-0' }}</p>
+
+      <ion-list>
+        <ion-item *ngFor="let item of pesanan.item">
+          <ion-label>
+            {{ item.name }} × {{ item.jumlah }}<br>
+            <small>Rp {{ item.price | number:'1.0-0' }}</small>
+          </ion-label>
+          <ion-note slot="end">
+            Rp {{ item.price * item.jumlah | number:'1.0-0' }}
+          </ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ng-template #kosong>
+  <ion-content class="ion-padding">
+    <h3>Belum ada pesanan yang dikonfirmasi.</h3>
+  </ion-content>
+</ng-template>
