@@ -149,14 +149,16 @@ async simpanPesanan() {
     return;
   }
 
-  const dataPesanan = {
-    meja: this.nomorMeja,
-    nama: this.namaPelanggan,
-    jumlahTamu: this.jumlahTamu,
-    item: this.keranjang,
-    total: this.totalHarga,
-    metode: this.metodePembayaran
-  };
+const dataPesanan = {
+  meja: this.nomorMeja,
+  nama: this.namaPelanggan,
+  jumlahTamu: this.jumlahTamu,
+  item: this.keranjang,
+  total: this.totalHarga,
+  metode: this.metodePembayaran,
+  jenisLayanan: this.kategoriPesanan // ✅ Tambahkan ini
+};
+
 
   console.log('✅ Pesanan disimpan:', dataPesanan);
 
@@ -179,6 +181,7 @@ async simpanPesanan() {
       meja: this.nomorMeja,
       metode: this.metodePembayaran,
       total: this.totalHarga,
+      jenisLayanan:this.kategoriPesanan
     },
     state: { pesanan: dataPesanan } // cara kirim full object
   });

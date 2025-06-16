@@ -345,6 +345,16 @@ ion-button[color="danger"] {
       </ion-card-content>
     </ion-card>
 
+    <ion-segment [(ngModel)]="kategoriPesanan">
+    <ion-segment-button value="dinein">
+      Dine In
+    </ion-segment-button>
+    <ion-segment-button value="takeaway">
+      Take Away
+    </ion-segment-button>
+  </ion-segment>
+
+  
     <!-- Tombol Aksi -->
     <ion-footer class="ion-padding">
       <ion-button expand="block" color="medium" (click)="batalkanPesanan()">
@@ -355,4 +365,6 @@ ion-button[color="danger"] {
       </ion-button>
     </ion-footer>
   </ng-container>
+
+
 </ion-content>

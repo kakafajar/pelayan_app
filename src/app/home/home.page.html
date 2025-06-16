@@ -53,7 +53,7 @@
 </ion-card>
 
 <ion-card class="layanan-card takeaway">
-  <ion-item lines="none" button detail [routerLink]="['/dine-in','takeaway']">
+  <ion-item lines="none" button detail (click)="bukaLayanan('takeaway')">
     <ion-avatar slot="start">
       <div class="icon-wrapper" style="background-color: #FF9500;">
         <ion-icon name="bag-handle-outline"></ion-icon>

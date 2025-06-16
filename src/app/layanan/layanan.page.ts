@@ -52,6 +52,12 @@ tambahMeja() {
       alert('Silakan pilih meja terlebih dahulu');
     }
   }
+  
+masukKeMenuLangsung() {
+  localStorage.setItem('orderType', 'takeaway');
+  localStorage.removeItem('table'); // karena gak pilih meja
+  this.router.navigate(['/menu']);
+}
 
 
 }
