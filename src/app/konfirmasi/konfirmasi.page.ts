@@ -15,7 +15,10 @@
     total: number;
     metode: string;
     status: string;
-    jenisLayanan: string; // ✅ Tambahan jenis layanan
+    jenisLayanan: string;
+    jam: Date; 
+    statusPembayaran: 'belum dibayar' | 'sudah bayar';
+// ✅ Tambahan jenis layanan
   }
 
 
@@ -47,6 +50,7 @@
       // Tambahkan status dan simpan ke localStorage
       const selesai = { ...this.pesanan, status: 'selesai' };
       const data = localStorage.getItem('pesananSelesai');
+      console.log("bruh", data);
       const existing = data ? JSON.parse(data) : [];
       existing.push(selesai);
       localStorage.setItem('pesananSelesai', JSON.stringify(existing));

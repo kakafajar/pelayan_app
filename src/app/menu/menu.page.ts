@@ -11,7 +11,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class MenuPage implements OnInit {
   nomorMeja: any;
-  kategoriDipilih = 'makanan';
+  kategoriDipilih = 'special';
   jumlahDipilih: number = 0;
   totalHarga: number = 0;
 
@@ -42,23 +42,26 @@ export class MenuPage implements OnInit {
   this.showRincianPesanan = false;
   this.showPesananAktif = true;
 
-  this.daftarPesanan = [
-    {
-      id: '001235',
-      jenis: 'Dine In',
-      jam: '14:45',
-      itemSummary: 'Nasi Goreng Spesial, Ayam Bakar Madu (2x), Soto Ayam',
-      total: 119900,
-      status: 'Menunggu',
-      statusWarna: 'warning',
-    },
-    // Tambah lainnya sesuai kebutuhan
-  ];
 }
+
+filterMenu() {
+  const category = this.kategoriDipilih;
+  this.filteredMenu = this.daftarMenu.filter(item => item.category === category);
+}
+
+pilihKategori(kat: string) {
+  this.kategoriDipilih = kat;
+  this.filterMenu();
+}
+
+
+
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.nomorMeja = params['meja'];
+      this.kategoriPesanan=params['jenisLayanan'];
+      this.filterMenu();
     });
   }
 
@@ -148,6 +151,15 @@ async simpanPesanan() {
     await toast.present();
     return;
   }
+const now = new Date();
+const jam = now.toLocaleString('id-ID', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false
+});
 
 const dataPesanan = {
   meja: this.nomorMeja,
@@ -156,7 +168,9 @@ const dataPesanan = {
   item: this.keranjang,
   total: this.totalHarga,
   metode: this.metodePembayaran,
-  jenisLayanan: this.kategoriPesanan // ✅ Tambahkan ini
+  jenisLayanan: this.kategoriPesanan,
+  jam: jam,
+  statusPembayaran: 'Belum Bayar'
 };
 
 
@@ -173,6 +187,8 @@ const dataPesanan = {
   await toast.present();
 
     // Simpan ke localStorage
+  // console.log(dataPesanan);
+  
   localStorage.setItem('pesananTerakhir', JSON.stringify(dataPesanan));
 
   // Navigasi ke halaman konfirmasi sambil mengirim data (optional: stringify jika objek besar)
@@ -186,6 +202,17 @@ const dataPesanan = {
     state: { pesanan: dataPesanan } // cara kirim full object
   });
 }
+
+// Contoh fungsi ketika user bayar
+tandaiSudahBayar() {
+  const pesanan = JSON.parse(localStorage.getItem('pesananTerakhir') || '{}');
+  if (pesanan) {
+    pesanan.statusPembayaran = 'Sudah Bayar';
+    localStorage.setItem('pesananTerakhir', JSON.stringify(pesanan));
+    console.log('✅ Status pembayaran diperbarui ke Sudah Bayar');
+  }
+}
+
 
 
 

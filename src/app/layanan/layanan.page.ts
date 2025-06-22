@@ -46,7 +46,7 @@ export class LayananPage implements OnInit {
 tambahMeja() {
     if (this.selectedMeja) {
       this.router.navigate(['/menu'], {
-        queryParams: { meja: this.selectedMeja }
+        queryParams: { meja: this.selectedMeja, jenisLayanan: this.jenisLayanan }
       });
     } else {
       alert('Silakan pilih meja terlebih dahulu');
@@ -56,7 +56,9 @@ tambahMeja() {
 masukKeMenuLangsung() {
   localStorage.setItem('orderType', 'takeaway');
   localStorage.removeItem('table'); // karena gak pilih meja
-  this.router.navigate(['/menu']);
+  this.router.navigate(['/menu'], {
+        queryParams: { meja: this.selectedMeja, jenisLayanan: this.jenisLayanan }
+      });
 }
 
 

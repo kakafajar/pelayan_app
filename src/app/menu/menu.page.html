@@ -224,13 +224,15 @@ ion-button[color="danger"] {
     *ngIf="!showRincianPesanan">
   </ion-searchbar>
 
-  <!-- Tabs -->
-  <ion-segment [(ngModel)]="kategoriDipilih" class="menu-tabs" *ngIf="!showRincianPesanan">
-    <ion-segment-button value="makanan">Makanan</ion-segment-button>
-    <ion-segment-button value="minuman">Minuman</ion-segment-button>
-    <ion-segment-button value="dessert">Dessert</ion-segment-button>
-    <ion-segment-button value="snack">Snack</ion-segment-button>
-  </ion-segment>
+<!-- Contoh segment atau tombol kategori -->
+<ion-segment [(ngModel)]="kategoriDipilih" (ionChange)="filterMenu()" *ngIf="!showRincianPesanan">
+  <ion-segment-button value="special">Special</ion-segment-button>
+  <ion-segment-button value="mie">Mie</ion-segment-button>
+  <ion-segment-button value="combo">Combo</ion-segment-button>
+  <ion-segment-button value="nasi">Nasi</ion-segment-button>
+</ion-segment>
+
+
 
   <!-- Menu List -->
   <div class="menu-list" *ngIf="!showRincianPesanan">
@@ -344,16 +346,6 @@ ion-button[color="danger"] {
 
       </ion-card-content>
     </ion-card>
-
-    <ion-segment [(ngModel)]="kategoriPesanan">
-    <ion-segment-button value="dinein">
-      Dine In
-    </ion-segment-button>
-    <ion-segment-button value="takeaway">
-      Take Away
-    </ion-segment-button>
-  </ion-segment>
-
   
     <!-- Tombol Aksi -->
     <ion-footer class="ion-padding">

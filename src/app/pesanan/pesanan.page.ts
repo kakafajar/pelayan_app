@@ -13,6 +13,10 @@ interface Pesanan {
   item: Item[];
   total: number;
   metode: string;
+  jenisLayanan: string;
+  status:'selesai';
+  jam: Date;
+  statusPembayaran: 'belum dibayar' | 'sudah bayar';
 }
 
 @Component({
@@ -28,4 +32,15 @@ export class PesananPage implements OnInit {
     const data = localStorage.getItem('pesananSelesai');
     this.daftarPesanan = data ? JSON.parse(data) : [];
   }
+
+  getStatusColor(status: string): string {
+  switch (status.toLowerCase()) {
+    case 'menunggu': return 'warning';
+    case 'memasak': return 'primary';
+    case 'siap': return 'success';
+    case 'bayar': return 'tertiary';
+    default: return 'medium';
+  }
+}
+
 }

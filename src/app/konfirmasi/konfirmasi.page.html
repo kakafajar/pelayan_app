@@ -1,4 +1,4 @@
-<ion-card *ngIf="pesanan">
+<ion-card *ngIf="pesanan" class="order">
   <ion-card-header>
     <ion-card-title>Konfirmasi Pesanan</ion-card-title>
   </ion-card-header>
@@ -6,7 +6,12 @@
     <p><strong>Meja:</strong> {{ pesanan.meja }}</p>
     <p><strong>Nama:</strong> {{ pesanan.nama }}</p>
     <p><strong>Jumlah Tamu:</strong> {{ pesanan.jumlahTamu }}</p>
+    <p><strong>waktu:</strong> {{ pesanan.jam }}</p>
     <p><strong>Jenis Layanan:</strong> {{ pesanan.jenisLayanan === 'dinein' ? 'Dine In' : 'Take Away' }}</p>
+    <div style="align-items: center; display:flex;">
+      <strong>Status Pembayaran:</strong>
+      <ion-badge [color]="pesanan.statusPembayaran === 'sudah bayar' ? 'success' : 'danger'">{{ pesanan.statusPembayaran }}</ion-badge>
+    </div>
     <p><strong>Metode:</strong> {{ pesanan.metode }}</p>
     <p><strong>Total:</strong> Rp {{ pesanan.total | number:'1.0-0' }}</p>
 
@@ -14,7 +19,7 @@
     <ion-button expand="block" color="success" (click)="konfirmasiPesanan()">
       Konfirmasi & Selesaikan
     </ion-button>
-  </ion-card-content>
+  </ion-card-content> 
 </ion-card>
 
 <!-- Jika tidak ada data -->

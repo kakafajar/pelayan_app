@@ -1,0 +1,90 @@
+.pesanan-content {
+  background-color: #f8f9fa;
+}
+
+.filter-segment {
+  padding: 10px 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pesanan-list {
+  padding: 12px 16px;
+}
+
+.pesanan-card {
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.pesanan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-header .order-id {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.info-sub {
+  font-size: 13px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.status-badge {
+  font-size: 12px;
+  height: 22px;
+  align-self: flex-start;
+}
+
+.customer-name {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.item-list {
+  border-top: 1px dashed #ddd;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 8px;
+}
+
+.harga-total {
+  color: #e65100;
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.icon-button {
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
