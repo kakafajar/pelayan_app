@@ -7,7 +7,7 @@
         <div class="avatar">P</div>
         <div class="greeting">
           <div class="small-text">{{ greeting }}</div>
-          <div class="bold-text">Pelayan</div>
+          <div class="bold-text">{{ username }}</div>
         </div>
       </div>
      <ion-icon name="notifications-outline" (click)="bukaNotifikasi()"></ion-icon>
@@ -87,13 +87,13 @@
       <ion-label>Pesanan</ion-label>
     </ion-tab-button>
 
-
+<!-- 
     <ion-tab-button routerLink="/profil">
       <ion-icon name="person-outline"></ion-icon>
       <ion-label>Profile</ion-label>
-    </ion-tab-button>
+    </ion-tab-button> -->
 
-    <ion-tab-button routerLink="/login">
+    <ion-tab-button (click)="logout()">
       <ion-icon name="log-out-outline"></ion-icon>
       <ion-label>Logout</ion-label>
     </ion-tab-button>
