@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, single } from 'rxjs';
 import { SingletonService } from './singleton.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { SingletonService } from './singleton.service';
 export class AuthService {
   private http = inject(HttpClient);
 
-  constructor(private singleton: SingletonService){}
+  constructor(private singleton: SingletonService, private router:Router){}
 
   login(email:string, password:string): Observable<any> 
   {
@@ -31,8 +32,12 @@ export class AuthService {
 
   logout()
   {
-    return this.http.post(this.singleton.apiUrl+"/api/logout",{}, {
-      headers : this.singleton.get_header()});
+    this.http.post(this.singleton.apiUrl+"/api/logout",{}, {
+      headers : this.singleton.get_header()})
+      .subscribe(response=>{
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      });
   }
 
   checkUser(username:string|any, password:string|any)
