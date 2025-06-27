@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MENU_ITEMS } from '../data/menu';
+import { Params } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -58,12 +59,12 @@ pilihKategori(kat: string) {
 
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.nomorMeja = params['meja'];
-      this.kategoriPesanan=params['jenisLayanan'];
-      this.filterMenu();
-    });
-  }
+  this.route.queryParams.subscribe((params: Params) => {
+    this.nomorMeja = params['meja'];
+    this.kategoriPesanan = params['jenisLayanan'];
+    this.filterMenu();
+  });
+}
 
   // 🔍 Pencarian
   cariMenu(event: any) {

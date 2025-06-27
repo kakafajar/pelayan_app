@@ -24,8 +24,8 @@
     <h3 class="section-title">Pilih Layanan</h3>
     <div class="service-list">
 
-       <ion-card class="layanan-card reservasi">
-  <ion-item lines="none" button detail [routerLink]="['/dine-in','reservasi']">
+      <ion-card class="layanan-card reservasi">
+  <ion-item lines="none" button detail (click)="mulaiScan()">
     <ion-avatar slot="start">
       <div class="icon-wrapper" style="background-color: #FF9F0A;">
         <ion-icon name="scan-outline"></ion-icon>
@@ -37,6 +37,7 @@
     </ion-label>
   </ion-item>
 </ion-card>
+
 
 <ion-card class="layanan-card dinein">
   <ion-item lines="none" button detail (click)="bukaLayanan('dinein')" >

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouteReuseStrategy } from '@angular/router';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
+
 
 @Component({
   selector: 'app-home',
@@ -52,6 +54,24 @@ setGreeting() {
       this.greeting = 'Selamat Malam';
     }
   }
+
+}
+async mulaiScan() {
+  try {
+    const result = await BarcodeScanner.scan();
+    
+    if (result?.barcodes?.length > 0) {
+      const scannedValue = result.barcodes[0].rawValue;
+      console.log('Barcode ditemukan:', scannedValue);
+      alert('Hasil Scan: ' + scannedValue);
+    } else {
+      alert('Tidak ada barcode terdeteksi.');
+    }
+  } catch (err) {
+    console.error('Gagal scan barcode:', err);
+    alert('Terjadi kesalahan saat scanning');
+  }
+}
 
   logout(){
     this.authService.logout();
