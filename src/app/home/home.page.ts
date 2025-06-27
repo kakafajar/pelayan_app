@@ -33,19 +33,19 @@ export class HomePage implements OnInit{
   }
 
 
- bukaLayanan(jenis: string) {
+  bukaLayanan(jenis: string) {
     this.navCtrl.navigateForward(`/layanan/${jenis}`)
   }
 
   bukaNotifikasi() {
-  this.router.navigate(['/konfirmasi']);
-}
+    this.router.navigate(['/konfirmasi']);
+  }
 
-setGreeting() {
+  setGreeting() {
     const hour = new Date().getHours();
 
     if (hour >= 5 && hour < 12) {
-      this.greeting = 'Selamat Pagi';
+        this.greeting = 'Selamat Pagi';
     } else if (hour >= 12 && hour < 15) {
       this.greeting = 'Selamat Siang';
     } else if (hour >= 15 && hour < 18) {
@@ -55,26 +55,24 @@ setGreeting() {
     }
   }
 
-}
-async mulaiScan() {
-  try {
-    const result = await BarcodeScanner.scan();
-    
-    if (result?.barcodes?.length > 0) {
-      const scannedValue = result.barcodes[0].rawValue;
-      console.log('Barcode ditemukan:', scannedValue);
-      alert('Hasil Scan: ' + scannedValue);
-    } else {
-      alert('Tidak ada barcode terdeteksi.');
+  async mulaiScan() {
+    try {
+      const result = await BarcodeScanner.scan();
+      
+      if (result?.barcodes?.length > 0) {
+        const scannedValue = result.barcodes[0].rawValue;
+        console.log('Barcode ditemukan:', scannedValue);
+        alert('Hasil Scan: ' + scannedValue);
+      } else {
+        alert('Tidak ada barcode terdeteksi.');
+      }
+    } catch (err) {
+      console.error('Gagal scan barcode:', err);
+      alert('Terjadi kesalahan saat scanning');
     }
-  } catch (err) {
-    console.error('Gagal scan barcode:', err);
-    alert('Terjadi kesalahan saat scanning');
   }
-}
 
   logout(){
     this.authService.logout();
   }
-
 }

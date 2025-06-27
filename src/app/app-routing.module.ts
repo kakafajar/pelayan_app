@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './service/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,26 +10,32 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate : [AuthGuard]
   },
   {
     path: 'layanan/:jenis',
-    loadChildren: () => import('./layanan/layanan.module').then( m => m.LayananPageModule)
-  },  {
+    loadChildren: () => import('./layanan/layanan.module').then( m => m.LayananPageModule),
+    canActivate : [AuthGuard]
+  },
+  {
     path: 'menu',
-    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule),
+    canActivate : [AuthGuard]
   },
   {
     path: 'konfirmasi',
-    loadChildren: () => import('./konfirmasi/konfirmasi.module').then( m => m.KonfirmasiPageModule)
+    loadChildren: () => import('./konfirmasi/konfirmasi.module').then( m => m.KonfirmasiPageModule),
+    canActivate : [AuthGuard]
   },
   {
     path: 'pesanan',
-    loadChildren: () => import('./pesanan/pesanan.module').then( m => m.PesananPageModule)
+    loadChildren: () => import('./pesanan/pesanan.module').then( m => m.PesananPageModule),
+    canActivate : [AuthGuard]
   },
 
 ];
