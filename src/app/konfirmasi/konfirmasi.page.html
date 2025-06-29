@@ -1,29 +1,30 @@
-<ion-card *ngIf="pesanan" class="order">
+<ion-card class="order">
   <ion-card-header>
     <ion-card-title>Konfirmasi Pesanan</ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <p><strong>Meja:</strong> {{ pesanan.meja }}</p>
-    <p><strong>Nama:</strong> {{ pesanan.nama }}</p>
-    <p><strong>Jumlah Tamu:</strong> {{ pesanan.jumlahTamu }}</p>
-    <p><strong>waktu:</strong> {{ pesanan.jam }}</p>
-    <p><strong>Jenis Layanan:</strong> {{ pesanan.jenisLayanan === 'dinein' ? 'Dine In' : 'Take Away' }}</p>
-    <div style="align-items: center; display:flex;">
-      <strong>Status Pembayaran:</strong>
-      <ion-badge [color]="pesanan.statusPembayaran === 'sudah bayar' ? 'success' : 'danger'">{{ pesanan.statusPembayaran }}</ion-badge>
+    <div *ngFor="let transaksi of transaksiList" [hidden]="transaksi.status_pembayaran === 'selesai'">
+      <p [hidden]="! transaksi.order.meja"><strong>Meja:</strong> {{ transaksi.order.meja ? transaksi.order.meja.nama_meja : '' }}</p>
+      <p><strong>Nama:</strong> {{ transaksi["user.username"] }}</p>
+      <p><strong>waktu:</strong> {{ transaksi.created_at }}</p>
+      <p><strong>Jenis Layanan:</strong> {{ transaksi.order.jenis_order  }}</p>
+      <div style="align-items: center; display:flex;">
+        <strong>Status Pembayaran:</strong>
+        <ion-badge [color]="transaksi.status_pembayaran === 'selesai' ? 'success' : 'danger'">{{ transaksi.status_pembayaran }}</ion-badge>
+      </div>
+      <p><strong>Metode:</strong> {{ transaksi.metode_pembayaran }}</p>
+      <p><strong>Total:</strong> Rp {{ transaksi.total_harga | number:'1.0-0' }}</p>
+  
+      <!-- Tombol Konfirmasi -->
+      <ion-button expand="block" color="success" (click)="konfirmasiPesanan(transaksi.id)">
+        Konfirmasi & Selesaikan
+      </ion-button>
     </div>
-    <p><strong>Metode:</strong> {{ pesanan.metode }}</p>
-    <p><strong>Total:</strong> Rp {{ pesanan.total | number:'1.0-0' }}</p>
-
-    <!-- Tombol Konfirmasi -->
-    <ion-button expand="block" color="success" (click)="konfirmasiPesanan()">
-      Konfirmasi & Selesaikan
-    </ion-button>
   </ion-card-content> 
 </ion-card>
 
 <!-- Jika tidak ada data -->
-<ion-card *ngIf="!pesanan">
+<ion-card *ngIf="transaksiList.length <= 0">
   <ion-card-content>
     <p>Tidak ada pesanan untuk dikonfirmasi.</p>
   </ion-card-content>
