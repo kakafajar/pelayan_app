@@ -1,3 +1,202 @@
+custom-ion-card {
+   --background: #ff6b00;  
+           --color: white; 
+  }
+ .custom-minus {
+        --color: white;
+          --background: #ff6b00;   
+          --border-color: #ff6b00;
+ }
+
+ .custom-plus {
+  --color: white;
+  --background: #ff6b00;   
+  --border-color: #ff6b00;
+}
+
+
+.jumlah-tamu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      ion-label {
+        font-size: 14px;
+        color: #7d7d7d;
+      }
+
+      ion-buttons {
+        display: flex;
+        align-items: center;
+
+        ion-button {
+          --border-radius: 6px;
+          --padding-start: 8px;
+          --padding-end: 8px;
+          font-weight: bold;
+        }
+
+        ion-label {
+          font-size: 14px;
+          font-weight: bold;
+          padding: 0 10px;
+          color: #000;
+        }
+
+      }
+    }
+
+
+    ion-card {
+  &.informasi-pelanggan {
+    ion-card-header {
+      padding-bottom: 0;
+
+      ion-card-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+
+    ion-card-content {
+      padding-top: 0;
+    }
+
+    ion-item {
+      --background: transparent;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --min-height: 50px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    ion-label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    ion-input::part(native)::-webkit-input-placeholder {
+      font-weight: 150; /* Lebih tipis */
+      color: #e3e3e3;      /* Bisa sesuaikan warna placeholder */
+      font-size: 10px;
+    }
+
+    ion-input::part(native):-moz-placeholder {
+      font-weight: 150;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+    ion-input::part(native)::placeholder {
+      font-weight: 150;
+      color: #aaa;
+      font-size: 10px;
+    }
+
+  }
+
+  
+}
+
+/* Kartu Item */
+ion-card-content {
+  padding: 12px;
+}
+
+ion-item {
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  box-shadow: none;
+  --background: transparent;
+}
+
+/* Label Nama dan Harga Item */
+ion-label h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+ion-label p {
+  font-size: 13px;
+  color: #888;
+  margin: 2px 0;
+}
+
+ion-label strong {
+  color: #000;
+}
+
+/* Tombol + dan - */
+ion-button.qty-button {
+  --background: #ff6b00;
+  --color: #fff;
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  margin: 0 6px;
+}
+
+/* Label jumlah (angka tengah) */
+ion-buttons ion-label {
+  font-weight: 500;
+  font-size: 14px;
+  width: 20px;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  line-height: 28px;
+  color: #000;
+}
+
+/* Tombol Trash (hapus) */
+ion-button[color="danger"] {
+  margin-left: 4px;
+}
+
+.nama-pelanggan {
+  font-size: 20px;
+}
+
+
+.metode-pembayaran {
+  ion-card-header {
+    padding-bottom: 0;
+  }
+
+  ion-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  ion-select {
+    font-weight: 500;
+    --placeholder-color: #aaa;
+  }
+
+  ion-label[position="stacked"] {
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+}
+
+
 .menu-content {
   --padding-top: 16px;
   background: #f9f9f9;
