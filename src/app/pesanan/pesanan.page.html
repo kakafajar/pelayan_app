@@ -1,4 +1,4 @@
-<ion-content *ngIf="daftarPesanan.length > 0; else kosong" class="pesanan-content">
+<ion-content *ngIf="transaksiList.length > 0; else kosong" class="pesanan-content">
   <ion-segment value="semua" class="filter-segment">
     <ion-segment-button value="semua">Semua</ion-segment-button>
     <ion-segment-button value="Dine In">Dine In</ion-segment-button>
@@ -6,44 +6,44 @@
   </ion-segment>
 
   <div class="pesanan-list">
-    <ion-card *ngFor="let pesanan of daftarPesanan" class="pesanan-card">
+    <ion-card *ngFor="let transaksi of transaksiList" class="pesanan-card">
       <ion-card-header>
         <div class="pesanan-header">
           <div>
             <h3>Order </h3>
-            <small>{{ pesanan.jenisLayanan }} • Meja {{ pesanan.meja }} • {{ pesanan.jam }}</small>
+            <small>{{ transaksi.order.jenis_order }} {{ transaksi.order.meja ? '• Meja' + transaksi.order.meja.nama_meja : ''}} • {{ transaksi.created_at }}</small>
           </div>
-          <ion-badge [color]="getStatusColor(pesanan.status)">
-            {{ pesanan.status }}
+          <ion-badge [color]="getStatusColor(transaksi.order.status_order)">
+            {{ transaksi.order.status_order }}
           </ion-badge>
         </div>
       </ion-card-header>
 
       <ion-card-content>
-        <p class="nama-pelanggan">{{ pesanan.nama }} • {{ pesanan.jumlahTamu }} orang</p>
+        <p class="nama-pelanggan">{{ transaksi["user.username"] }}</p>
 
           <!-- 🔽 Status Pembayaran -->
         <p class="status-pembayaran">
           <strong>Status Pembayaran:</strong>
-          <ion-badge [color]="pesanan.statusPembayaran === 'sudah bayar' ? 'success' : 'danger'">
-            {{ pesanan.statusPembayaran }}
+          <ion-badge [color]="transaksi.status_pembayaran === 'selesai' ? 'success' : 'danger'">
+            {{ transaksi.status_pembayaran }}
           </ion-badge>
         </p>
 
         <ion-list lines="none">
-          <ion-item *ngFor="let item of pesanan.item" class="item-detail">
+          <ion-item *ngFor="let item of transaksi.order.details" class="item-detail">
             <ion-label>
-              {{ item.name }} ({{ item.jumlah }}x)
+              {{ item.menu.nama_menu }} ({{ item.jumlah }}x)
             </ion-label>
             <ion-note slot="end" color="medium">
-              Rp {{ item.price * item.jumlah | number:'1.0-0' }}
+              Rp {{ item.menu.harga_menu * item.jumlah | number:'1.0-0' }}
             </ion-note>
           </ion-item>
         </ion-list>
 
         <div class="total-section">
           <strong>Total:</strong>
-          <span class="harga-total">Rp {{ pesanan.total | number:'1.0-0' }}</span>
+          <span class="harga-total">Rp {{ transaksi.total_harga | number:'1.0-0' }}</span>
         </div>
 
         <div class="aksi-icons">
