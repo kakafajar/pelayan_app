@@ -27,12 +27,12 @@
       <div class="meja-grid">
         <div
           class="meja-card"
-          *ngFor="let meja of daftarMeja"
-          [ngClass]="[meja.status, selectedMeja === meja.nomor ? 'selected' : '']"
+          *ngFor="let meja of mejaList"
+          [ngClass]="[meja.status_meja, selectedMeja === meja ? 'selected' : '']"
           (click)="onSelectMeja(meja)"
         >
-          <div class="meja-nomor">{{ meja.nomor }}</div>
-          <span class="status-label">{{ meja.status }}</span>
+          <div class="meja-nomor">{{ meja.nama_meja }}</div>
+          <span class="status-label">{{ meja.status_meja }}</span>
         </div>
       </div>
 
@@ -41,15 +41,15 @@
         <div class="status-item">
           <span class="dot tersedia"></span> Tersedia
         </div>
-        <div class="status-item">
+        <!-- <div class="status-item">
           <span class="dot reservasi"></span> Reservasi
-        </div>
+        </div> -->
         <div class="status-item">
           <span class="dot terisi"></span> Terisi
         </div>
-        <div class="status-item">
+        <!-- <div class="status-item">
           <span class="dot cleaning"></span> Cleaning
-        </div>
+        </div> -->
       </div>
 
       <ion-button expand="block" class="btn-tambah" (click)="tambahMeja()">
