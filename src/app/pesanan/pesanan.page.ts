@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import { TransaksiService } from '../service/transaksi.service';
+import { AlertController } from '@ionic/angular';
+
 
 
 @Component({
@@ -11,10 +13,13 @@ import { TransaksiService } from '../service/transaksi.service';
 })
 export class PesananPage implements OnInit {
   transaksiList : any[] = [];
+    allTransaksi: any[] = []; 
+  statusFilter: string = 'semua'; 
 
   constructor(
     private authService:AuthService,
     private transaksiService:TransaksiService,
+    private alertController: AlertController
   ){}
 
   ngOnInit() {
@@ -39,5 +44,34 @@ export class PesananPage implements OnInit {
   logout(){
     this.authService.logout();
   }
+
+  async editMeja(transaksi: any) {
+  const alert = await this.alertController.create({
+    header: 'Edit Meja',
+    message: 'Apakah meja tersedia?',
+    buttons: [
+      {
+        text: 'Tidak Tersedia',
+        role: 'cancel'
+        
+      },
+      {
+        text: 'Tersedia'
+        
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
+
+hasFilteredTransaksi(): boolean {
+  return this.transaksiList.some(t =>
+    this.statusFilter === 'semua' ||
+    t?.order?.status_order?.toLowerCase() === this.statusFilter
+  );
+}
+
 
 }

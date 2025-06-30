@@ -1,69 +1,92 @@
-<ion-content *ngIf="transaksiList.length > 0; else kosong" class="pesanan-content">
-  <ion-segment value="semua" class="filter-segment">
+<ion-content class="pesanan-content">
+
+  <!-- 🔽 Filter Status -->
+  <ion-segment [(ngModel)]="statusFilter" class="filter-segment">
     <ion-segment-button value="semua">Semua</ion-segment-button>
-    <ion-segment-button value="Dine In">Dine In</ion-segment-button>
-    <ion-segment-button value="Take Away">Take Away</ion-segment-button>
+    <ion-segment-button value="proses">Proses</ion-segment-button>
+    <ion-segment-button value="sudah">Selesai</ion-segment-button>
   </ion-segment>
 
-  <div class="pesanan-list">
-    <ion-card *ngFor="let transaksi of transaksiList" class="pesanan-card">
-      <ion-card-header>
-        <div class="pesanan-header">
-          <div>
-            <h3>Order </h3>
-            <small>{{ transaksi.order.jenis_order }} {{ transaksi.order.meja ? '• Meja' + transaksi.order.meja.nama_meja : ''}} • {{ transaksi.created_at }}</small>
+  <!-- 🔽 Tampilkan list atau pesan kosong -->
+  <ng-container *ngIf="transaksiList && transaksiList.length > 0; else kosong">
+    <ng-container *ngFor="let transaksi of transaksiList">
+      <ion-card
+        *ngIf="statusFilter === 'semua' || transaksi.order.status_order?.toLowerCase() === statusFilter"
+        class="pesanan-card"
+      >
+        <ion-card-header>
+          <div class="pesanan-header">
+            <div>
+              <h3>Order</h3>
+              <small>
+                {{ transaksi.order.jenis_order }}
+                {{ transaksi.order.meja ? '• Meja ' + transaksi.order.meja.nama_meja : '' }}
+                • {{ transaksi.created_at }}
+              </small>
+            </div>
+            <ion-badge [color]="getStatusColor(transaksi.order.status_order)">
+              {{ transaksi.order.status_order }}
+            </ion-badge>
           </div>
-          <ion-badge [color]="getStatusColor(transaksi.order.status_order)">
-            {{ transaksi.order.status_order }}
-          </ion-badge>
-        </div>
-      </ion-card-header>
+        </ion-card-header>
 
-      <ion-card-content>
-        <p class="nama-pelanggan">{{ transaksi["user.username"] }}</p>
+        <ion-card-content>
+          <p class="nama-pelanggan">{{ transaksi['user.username'] }}</p>
 
-          <!-- 🔽 Status Pembayaran -->
-        <p class="status-pembayaran">
-          <strong>Status Pembayaran:</strong>
-          <ion-badge [color]="transaksi.status_pembayaran === 'selesai' ? 'success' : 'danger'">
-            {{ transaksi.status_pembayaran }}
-          </ion-badge>
-        </p>
+          <p class="status-pembayaran">
+            <strong>Status Pembayaran:</strong>
+            <ion-badge [color]="transaksi.status_pembayaran === 'selesai' ? 'success' : 'danger'">
+              {{ transaksi.status_pembayaran }}
+            </ion-badge>
+          </p>
 
-        <ion-list lines="none">
-          <ion-item *ngFor="let item of transaksi.order.details" class="item-detail">
-            <ion-label>
-              {{ item.menu.nama_menu }} ({{ item.jumlah }}x)
-            </ion-label>
-            <ion-note slot="end" color="medium">
-              Rp {{ item.menu.harga_menu * item.jumlah | number:'1.0-0' }}
-            </ion-note>
-          </ion-item>
-        </ion-list>
+          <ion-list lines="none">
+            <ion-item *ngFor="let item of transaksi.order.details" class="item-detail">
+              <ion-label>
+                {{ item.menu.nama_menu }} ({{ item.jumlah }}x)
+              </ion-label>
+              <ion-note slot="end" color="medium">
+                Rp {{ item.menu.harga_menu * item.jumlah | number:'1.0-0' }}
+              </ion-note>
+            </ion-item>
+          </ion-list>
 
-        <div class="total-section">
-          <strong>Total:</strong>
-          <span class="harga-total">Rp {{ transaksi.total_harga | number:'1.0-0' }}</span>
-        </div>
+          <div class="total-section">
+            <strong>Total:</strong>
+            <span class="harga-total">Rp {{ transaksi.total_harga | number:'1.0-0' }}</span>
+          </div>
 
-        <div class="aksi-icons">
-          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-          <ion-icon name="eye-outline"></ion-icon>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
+          <div class="aksi-icons">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            <ion-icon name="eye-outline"></ion-icon>
+          </div>
 
+          <ion-button size="small" fill="outline" (click)="editMeja(transaksi)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Edit Meja
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
 
-  
+    <!-- Jika tidak ada data yang cocok filter -->
+    <div *ngIf="!hasFilteredTransaksi()">
+      <ion-text color="medium" class="ion-padding">
+        Belum ada pesanan dengan status "{{ statusFilter }}"
+      </ion-text>
+    </div>
+  </ng-container>
+
+  <!-- 🔽 Template jika tidak ada transaksi sama sekali -->
+  <ng-template #kosong>
+    <ion-text color="medium" class="ion-padding">
+      Belum ada pesanan yang dikonfirmasi.
+    </ion-text>
+  </ng-template>
+
 </ion-content>
 
-<ng-template #kosong>
-  <ion-content class="ion-padding">
-    <h3>Belum ada pesanan yang dikonfirmasi.</h3>
-  </ion-content>
-</ng-template>
-
+<!-- 🔽 Footer -->
 <ion-footer>
   <ion-tab-bar slot="bottom">
     <ion-tab-button routerLink="/home">
@@ -75,12 +98,6 @@
       <ion-icon name="receipt-outline"></ion-icon>
       <ion-label>Pesanan</ion-label>
     </ion-tab-button>
-
-<!-- 
-    <ion-tab-button routerLink="/profil">
-      <ion-icon name="person-outline"></ion-icon>
-      <ion-label>Profile</ion-label>
-    </ion-tab-button> -->
 
     <ion-tab-button (click)="logout()">
       <ion-icon name="log-out-outline"></ion-icon>
