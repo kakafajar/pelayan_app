@@ -1,64 +1,50 @@
-  import { Component, OnInit } from '@angular/core';
-  import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SingletonService } from '../service/singleton.service';
+import { TransaksiService } from '../service/transaksi.service';
 
-  interface Item {
-    name: string;
-    price: number;
-    jumlah: number;
+
+@Component({
+  standalone: false,
+  selector: 'app-konfirmasi',
+  templateUrl: './konfirmasi.page.html',
+  styleUrls: ['./konfirmasi.page.scss'],
+})
+export class KonfirmasiPage implements OnInit {
+  // pesanan: any= null;
+  transaksiList : any[] = [];
+
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+
+    private transaksiService:TransaksiService,
+    private singletonService:SingletonService
+  ) {}
+
+  ngOnInit() {
+    this.transaksiService.all()
+    .subscribe(response=>{
+      response.data.forEach((transaksiData:any) => {
+        if (transaksiData.status_pembayaran != "selesai"){
+          this.transaksiList.push(transaksiData);
+        }
+      });
+    })
+    // this.pesanan = this.singletonService.temps['lastTransaksi'];
+    
   }
 
-  interface Pesanan {
-    meja: string;
-    nama: string;
-    jumlahTamu: number;
-    item: Item[];
-    total: number;
-    metode: string;
-    status: string;
-    jenisLayanan: string;
-    jam: Date; 
-    statusPembayaran: 'belum dibayar' | 'sudah bayar';
-// ✅ Tambahan jenis layanan
+  konfirmasiPesanan(transaksi_id:any) {
+    this.transaksiService.update(transaksi_id, {
+      status_pembayaran : 'selesai'
+    })
+    .subscribe(response=>{
+      console.log(response);
+      
+    });
+
+    // Navigasi ke halaman pesanan
+    this.router.navigate(['/pesanan']);
   }
-
-
-  @Component({
-    standalone: false,
-    selector: 'app-konfirmasi',
-    templateUrl: './konfirmasi.page.html',
-    styleUrls: ['./konfirmasi.page.scss'],
-  })
-  export class KonfirmasiPage implements OnInit {
-    pesanan: Pesanan | null = null;
-
-    constructor(private route: ActivatedRoute, private router: Router) {}
-
-    ngOnInit() {
-      const nav = this.router.getCurrentNavigation();
-      if (nav?.extras.state?.['pesanan']) {
-        this.pesanan = nav.extras.state['pesanan'] as Pesanan;
-        console.log('📦 Pesanan diterima:', this.pesanan);
-      } else {
-        // Cegah tampil ulang saat refresh
-        this.pesanan = null;
-      }
-    }
-
-    konfirmasiPesanan() {
-      if (!this.pesanan) return;
-
-      // Tambahkan status dan simpan ke localStorage
-      const selesai = { ...this.pesanan, status: 'selesai' };
-      const data = localStorage.getItem('pesananSelesai');
-      console.log("bruh", data);
-      const existing = data ? JSON.parse(data) : [];
-      existing.push(selesai);
-      localStorage.setItem('pesananSelesai', JSON.stringify(existing));
-
-      // Bersihkan data setelah dikonfirmasi
-      this.pesanan = null;
-
-      // Navigasi ke halaman pesanan
-      this.router.navigate(['/pesanan']);
-    }
-  }
+}
