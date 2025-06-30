@@ -175,8 +175,13 @@ export class MenuPage implements OnInit {
     
     try{
       let order:any;
+      let meja_id:any = null;
+      if (this.selectedMeja && this.jenisLayanan !== 'takeaway'){
+        meja_id = this.selectedMeja.id;
+      }
       const orderRequest$ = this.orderService.create({
         user_id : localStorage.getItem("user_id"),
+        meja_id : meja_id,
         jenis_order: this.jenisLayanan
       });
       
@@ -227,9 +232,9 @@ export class MenuPage implements OnInit {
       }
       this.router.navigate(['/konfirmasi']);
     }
-    catch(error){
+    catch(error:any){
       alert(error);
-      console.log(error);
+      console.log(error.error.message);
     }
   }
 

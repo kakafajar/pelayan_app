@@ -14,4 +14,10 @@ export class TransaksiService extends ApiService {
         headers:this.singleton.get_header()
       })
     }
+
+    override update(id: string | number, params: Object): Observable<any> {
+      return this.http.post(this.singleton.apiUrl+"/api/transaksis/"+id, params,
+        {headers:this.singleton.get_header()}
+      );
+    }
 }
