@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
+
 import { AuthService } from '../service/auth.service';
 import { TransaksiService } from '../service/transaksi.service';
-import { AlertController } from '@ionic/angular';
 import { OrderService } from '../service/order.service';
-
-
 
 @Component({
   standalone: false,
@@ -13,8 +13,16 @@ import { OrderService } from '../service/order.service';
   styleUrls: ['./pesanan.page.scss'],
 })
 export class PesananPage implements OnInit {
+  @ViewChild(IonModal) buktiPembayaranModal !: IonModal;
+
+  currentBuktiTransaksiData = {
+    index : 0,
+    fileBukti : null,
+    status_pembayaran : null
+  };
   transaksiList : any[] = [];
-  statusFilter: string = 'semua'; 
+  statusFilter: string = 'semua';
+  previewImage:any;
 
   constructor(
     private alertController: AlertController,
@@ -28,7 +36,7 @@ export class PesananPage implements OnInit {
   ngOnInit() {
     this.transaksiService.all()
     .subscribe(response=>{
-      this.transaksiList.push(...response.data);
+      this.transaksiList.push(...response.data.reverse());
       // console.log(response.data);
       
     })
@@ -47,6 +55,70 @@ export class PesananPage implements OnInit {
 
   logout(){
     this.authService.logout();
+  }
+
+  getBuktiFileImage(){
+    if (this.currentBuktiTransaksiData.fileBukti){
+      return this.previewImage;
+    }
+    else if (this.transaksiList[this.currentBuktiTransaksiData.index].bukti_pembayaran){
+      return this.transaksiList[this.currentBuktiTransaksiData.index].bukti_pembayaran;
+    }
+    return '';
+  }
+
+  onBuktiFileChange(event:any){
+    this.currentBuktiTransaksiData.fileBukti = event.target.files[0]
+    const file = new FileReader();
+
+    file.onload = (e:any)=>{
+      this.previewImage = e.target.result;
+    }
+
+    file.readAsDataURL(event.target.files[0]);
+  }
+
+  setBuktiModal(transaksi_index:any){
+    this.currentBuktiTransaksiData.index = transaksi_index;
+    this.buktiPembayaranModal.present();
+  }
+
+  konfirmasiBuktiPembayaran(event:CustomEvent<OverlayEventDetail>){
+    console.log(event.detail);
+    
+    if (event.detail.role === 'save') {
+      const formData = new FormData();
+      const bukti :any= this.currentBuktiTransaksiData.fileBukti;
+      const status : any = this.currentBuktiTransaksiData.status_pembayaran;
+
+      if (bukti != null){
+        formData.append("bukti_pembayaran", bukti);
+      }
+      if (status != null){
+        formData.append("status_pembayaran", status);
+      }
+      
+      this.transaksiService.update(this.transaksiList[this.currentBuktiTransaksiData.index].id, formData)
+      .subscribe(response=>{
+        console.log(response);
+        const transaksi = this.transaksiList[this.currentBuktiTransaksiData.index];
+        transaksi.bukti_pembayaran = response.data.bukti_pembayaran;
+        transaksi.status_pembayaran = response.data.status_pembayaran;
+      },async error=>{
+        const alert = await this.alertController.create({
+          header: "error",
+          message: error.message
+        })
+        await alert.present();
+      });
+      
+    }
+    this.currentBuktiTransaksiData.fileBukti = null;
+    this.currentBuktiTransaksiData.status_pembayaran = null;
+  }
+
+  dismissBukti(response:string){
+    this.buktiPembayaranModal.dismiss(null, response);
   }
 
   async finishOrder(transaksi_index: any) {
