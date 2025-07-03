@@ -3,6 +3,7 @@ import { Router, RouteReuseStrategy } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
+import { TransaksiService } from '../service/transaksi.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class HomePage implements OnInit{
   constructor(
     private navCtrl: NavController,
     private router : Router,
-
+    private transaksiService : TransaksiService,
     private authService:AuthService
   ) {}
 
@@ -55,22 +56,44 @@ export class HomePage implements OnInit{
     }
   }
 
-  async mulaiScan() {
-    try {
-      const result = await BarcodeScanner.scan();
+ async mulaiScan() {
+  try {
+    const result = await BarcodeScanner.scan();
+
+    if (result?.barcodes?.length > 0) {
+      const scannedValue = result.barcodes[0].rawValue;
+      console.log('Barcode ditemukan:', scannedValue);
       
-      if (result?.barcodes?.length > 0) {
-        const scannedValue = result.barcodes[0].rawValue;
-        console.log('Barcode ditemukan:', scannedValue);
-        alert('Hasil Scan: ' + scannedValue);
-      } else {
-        alert('Tidak ada barcode terdeteksi.');
-      }
-    } catch (err) {
-      console.error('Gagal scan barcode:', err);
-      alert('Terjadi kesalahan saat scanning');
+        const kode = 'TRX12345';
+      // Panggil API Laravel berdasarkan kode transaksi
+      this.transaksiService.whereKodeTransaksi(scannedValue).subscribe({
+        next: (data) => {
+          console.log('Data Transaksi:', data);
+
+          alert(
+            `Kode: ${data.kode_transaksi}\n` +
+            `User: ${data.user.username}\n` +
+            `Total: Rp ${data.total_harga}\n` +
+            `Status: ${data.status_pembayaran}`
+          );
+
+          // (Opsional) Navigasi ke halaman detail transaksi
+          // this.router.navigate(['/detail-transaksi', data.kode_transaksi]);
+        },
+        error: (err) => {
+          console.error('Error ambil transaksi:', err);
+          alert('Transaksi tidak ditemukan.');
+        }
+      });
+    } else {
+      alert('Tidak ada barcode terdeteksi.');
     }
+  } catch (err) {
+    console.error('Gagal scan barcode:', err);
+    alert('Terjadi kesalahan saat scanning.');
   }
+}
+
 
   logout(){
     this.authService.logout();
