@@ -4,6 +4,8 @@ import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../service/auth.service';
 import { TransaksiService } from '../service/transaksi.service';
+import { ReservasiService } from '../service/reservasi.service';
+import { SingletonService } from '../service/singleton.service';
 
 
 @Component({
@@ -19,8 +21,11 @@ export class HomePage implements OnInit{
   constructor(
     private navCtrl: NavController,
     private router : Router,
+
     private transaksiService : TransaksiService,
-    private authService:AuthService
+    private reservasiService : ReservasiService,
+    private authService:AuthService,
+    private singletonService:SingletonService
   ) {}
 
   ngOnInit() {
@@ -39,7 +44,7 @@ export class HomePage implements OnInit{
   }
 
   bukaNotifikasi() {
-    this.router.navigate(['/konfirmasi']);
+    // this.router.navigate(['/konfirmasi']);
   }
 
   setGreeting() {
@@ -61,24 +66,18 @@ export class HomePage implements OnInit{
     const result = await BarcodeScanner.scan();
 
     if (result?.barcodes?.length > 0) {
+    // if(true){
       const scannedValue = result.barcodes[0].rawValue;
-      console.log('Barcode ditemukan:', scannedValue);
+      // const scannedValue = "20250703080108"
       
-        const kode = 'TRX12345';
       // Panggil API Laravel berdasarkan kode transaksi
       this.transaksiService.whereKodeTransaksi(scannedValue).subscribe({
-        next: (data) => {
-          console.log('Data Transaksi:', data);
-
-          alert(
-            `Kode: ${data.kode_transaksi}\n` +
-            `User: ${data.user.username}\n` +
-            `Total: Rp ${data.total_harga}\n` +
-            `Status: ${data.status_pembayaran}`
-          );
-
-          // (Opsional) Navigasi ke halaman detail transaksi
-          // this.router.navigate(['/detail-transaksi', data.kode_transaksi]);
+        next: (response) => {
+          
+          this.singletonService.temps = {
+            transaksi_id: response.data[0].id
+          }
+          this.router.navigate(['/pesanan']);
         },
         error: (err) => {
           console.error('Error ambil transaksi:', err);
