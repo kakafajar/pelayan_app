@@ -12,7 +12,7 @@ import { OrderService } from '../service/order.service';
   templateUrl: './pesanan.page.html',
   styleUrls: ['./pesanan.page.scss'],
 })
-export class PesananPage implements OnInit {
+export class PesananPage {
   @ViewChild(IonModal) buktiPembayaranModal !: IonModal;
 
   currentBuktiTransaksiData = {
@@ -33,7 +33,8 @@ export class PesananPage implements OnInit {
     private orderService:OrderService
   ){}
 
-  ngOnInit() {
+  ionViewWillEnter(){
+    this.transaksiList =[];
     this.transaksiService.all()
     .subscribe(response=>{
       this.transaksiList.push(...response.data.reverse());
