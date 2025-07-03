@@ -9,7 +9,7 @@
 
   <!-- 🔽 Tampilkan list atau pesan kosong -->
   <ng-container *ngIf="transaksiList && transaksiList.length > 0; else kosong">
-    <ng-container *ngFor="let transaksi of transaksiList">
+    <ng-container *ngFor="let transaksi of transaksiList; let i = index">
       <ion-card
         *ngIf="statusFilter === 'semua' || transaksi.order.status_order?.toLowerCase() === statusFilter"
         class="pesanan-card"
@@ -56,14 +56,19 @@
             <span class="harga-total">Rp {{ transaksi.total_harga | number:'1.0-0' }}</span>
           </div>
 
-          <div class="aksi-icons">
+          <!-- <div class="aksi-icons">
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
             <ion-icon name="eye-outline"></ion-icon>
-          </div>
+          </div> -->
 
-          <ion-button size="small" fill="outline" (click)="editMeja(transaksi)">
+          <ion-button size="small" fill="outline">
             <ion-icon name="create-outline" slot="start"></ion-icon>
-            Edit Meja
+            Edit Status Pembayaran
+          </ion-button>
+          
+          <ion-button *ngIf="transaksi.order.status_order === 'sudah dibuat'" size="small" fill="outline" (click)="finishOrder(i)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Finish Order
           </ion-button>
         </ion-card-content>
       </ion-card>
