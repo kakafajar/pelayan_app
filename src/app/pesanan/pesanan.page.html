@@ -57,17 +57,19 @@
 
   <!-- 🔽 Tampilkan list atau pesan kosong -->
   <ng-container *ngIf="transaksiList && transaksiList.length > 0; else kosong">
-    <ng-container *ngFor="let transaksi of transaksiList; let i = index">
+    <ng-container *ngFor="let transaksi of transaksiList; let i = index" >
       <ion-card
+        id="transaksi{{ transaksi.id }}"
         *ngIf="statusFilter === 'semua' || transaksi.order.status_order?.toLowerCase() === statusFilter"
         class="pesanan-card"
       >
         <ion-card-header>
+          <h3 [hidden]="scannedTransaksiId != transaksi.id" style="text-align: center;">Scanned</h3>
           <div class="pesanan-header">
             <div>
-              <h3>Order</h3>
+              <h3>Order {{ transaksi.order.jenis_order }}</h3>
               <small>
-                {{ transaksi.order.jenis_order }}
+                {{ transaksi.kode_transaksi }}
                 {{ transaksi.order.meja ? '• Meja ' + transaksi.order.meja.nama_meja : '' }}
                 • {{ transaksi.created_at }}
               </small>
@@ -79,13 +81,26 @@
         </ion-card-header>
 
         <ion-card-content>
-          <p class="nama-pelanggan">{{ transaksi['user.username'] }}</p>
+          <p class="nama-pelanggan">
+            <strong>dipesan oleh: </strong>
+            {{ transaksi['user.username'] }} ( {{transaksi['user.role']}} )
+          </p>
 
           <p class="status-pembayaran">
             <strong>Status Pembayaran:</strong>
             <ion-badge [color]="transaksi.status_pembayaran === 'selesai' ? 'success' : 'danger'">
               {{ transaksi.status_pembayaran }}
             </ion-badge>
+          </p>
+
+          <p *ngIf="transaksi.reservasi">
+            <strong>Tanggal dan jam</strong>
+            {{transaksi.reservasi.tanggal_dan_jam}}
+          </p>
+
+          <p *ngIf="transaksi.reservasi">
+            <strong>Status Reservasi</strong>
+            {{transaksi.reservasi.status_reservasi}}
           </p>
 
           <ion-list lines="none">
@@ -113,7 +128,11 @@
             <ion-icon name="create-outline" slot="start"></ion-icon>
             Edit Status Pembayaran
           </ion-button>
-          
+
+          <ion-button *ngIf="transaksi.reservasi && transaksi.reservasi.status_reservasi === 'menunggu'" size="small" fill="outline" (click)="setKehadiran(i)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Edit Status Kehadiran
+          </ion-button>
           
           <ion-button *ngIf="transaksi.order.status_order === 'sudah dibuat'" size="small" fill="outline" (click)="finishOrder(i)">
             <ion-icon name="create-outline" slot="start"></ion-icon>

@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonModal } from '@ionic/angular';
+import { AlertController, IonModal, PopoverController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 import { AuthService } from '../service/auth.service';
 import { TransaksiService } from '../service/transaksi.service';
 import { OrderService } from '../service/order.service';
+import { SingletonService } from '../service/singleton.service';
+import { scan, single } from 'rxjs';
+import { ReservasiService } from '../service/reservasi.service';
 
 @Component({
   standalone: false,
@@ -23,6 +26,7 @@ export class PesananPage {
   transaksiList : any[] = [];
   statusFilter: string = 'semua';
   previewImage:any;
+  scannedTransaksiId:any;
 
   constructor(
     private alertController: AlertController,
@@ -30,16 +34,29 @@ export class PesananPage {
     private authService:AuthService,
     private transaksiService:TransaksiService,
     // private mejaService:MejaService,
-    private orderService:OrderService
+    private orderService:OrderService,
+    private reservasiService:ReservasiService,
+    private singletonService:SingletonService
   ){}
 
   ionViewWillEnter(){
+    this.scannedTransaksiId = null;
     this.transaksiList =[];
     this.transaksiService.all()
     .subscribe(response=>{
       this.transaksiList.push(...response.data.reverse());
-      // console.log(response.data);
       
+      if (this.singletonService.temps["transaksi_id"]){
+        this.scannedTransaksiId = this.singletonService.temps['transaksi_id'];
+        this.singletonService.clearTemps();
+        setTimeout(() => {
+          try{
+            document.querySelector("#transaksi"+this.scannedTransaksiId)?.scrollIntoView({
+              behavior: 'smooth'
+            });
+          }catch (err){console.log(err)}
+        }, 200);
+      }
     })
   }
 
@@ -120,6 +137,45 @@ export class PesananPage {
 
   dismissBukti(response:string){
     this.buktiPembayaranModal.dismiss(null, response);
+  }
+
+  async setKehadiran(transaksi_index:any){
+    const alert = await this.alertController.create({
+      header: 'Edit Kehadiran',
+      message: 'Apakah Pembeli sudah sampai?',
+      buttons: [
+        {
+          text: 'Belum',
+          role: 'cancel'
+        },
+        {
+          text: 'Sudah',
+          handler: ()=>{
+            this.reservasiService.update(this.transaksiList[transaksi_index].reservasi.id, {
+              status_reservasi : 'sudah'
+            })
+            .subscribe(response=>{
+              console.log(response);
+              
+              this.transaksiList[transaksi_index].reservasi.status_reservasi = response.data.status_reservasi;
+            }, error=>{console.log(error)});
+          }
+        },
+        {
+          text: "Tidak hadir",
+          handler: ()=>{
+            this.reservasiService.update(this.transaksiList[transaksi_index].reservasi.id, {
+              status_reservasi : "tidak_hadir"
+            })
+            .subscribe(response=>{
+              this.transaksiList[transaksi_index].reservasi.status_reservasi = response.data.status_reservasi;
+            }, error=>{console.log(error)});
+          }
+        }
+      ]
+    });
+    
+    await alert.present();
   }
 
   async finishOrder(transaksi_index: any) {
