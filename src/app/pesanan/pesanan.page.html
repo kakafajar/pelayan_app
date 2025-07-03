@@ -1,15 +1,63 @@
+<ion-modal (willDismiss)="konfirmasiBuktiPembayaran($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissBukti('cancel')">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title>Edit Bukti Pembayaran</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="dismissBukti('save')" [strong]="true">Save</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-item>
+        <img [hidden]="! transaksiList[currentBuktiTransaksiData.index].bukti_pembayaran && ! currentBuktiTransaksiData.fileBukti" height="500px" src="{{ getBuktiFileImage() }}" alt="">
+        <p [hidden]="transaksiList[currentBuktiTransaksiData.index].bukti_pembayaran || currentBuktiTransaksiData.fileBukti">Tidak ada bukti pembayaran</p>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>
+                <label for="filebukti">
+                  <span [hidden]="transaksiList[currentBuktiTransaksiData.index].bukti_pembayaran">
+                    Masukan Bukti Pembayaran
+                  </span>
+                  <span [hidden]="! transaksiList[currentBuktiTransaksiData.index].bukti_pembayaran">
+                    Edit Bukti Pembayaran
+                  </span>
+                </label>
+                <input type="file" id="filebukti" accept=".png, .jpg, .jpeg" (change)="onBuktiFileChange($event)">
+              </div>
+            </ion-col>
+            <ion-col></ion-col>
+            <ion-col>
+              <ion-select label="Status Pembayaran" [(ngModel)]="currentBuktiTransaksiData.status_pembayaran">
+                <ion-select-option selected value="belum">Belum</ion-select-option>
+                <ion-select-option value="selesai">Selesai</ion-select-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 <ion-content class="pesanan-content">
 
   <!-- 🔽 Filter Status -->
   <ion-segment [(ngModel)]="statusFilter" class="filter-segment">
     <ion-segment-button value="semua">Semua</ion-segment-button>
     <ion-segment-button value="proses">Proses</ion-segment-button>
-    <ion-segment-button value="sudah">Selesai</ion-segment-button>
+    <ion-segment-button value="sudah dibuat">Sudah Dibuat</ion-segment-button>
+    <ion-segment-button value="selesai">Selesai</ion-segment-button>
   </ion-segment>
 
   <!-- 🔽 Tampilkan list atau pesan kosong -->
   <ng-container *ngIf="transaksiList && transaksiList.length > 0; else kosong">
-    <ng-container *ngFor="let transaksi of transaksiList">
+    <ng-container *ngFor="let transaksi of transaksiList; let i = index">
       <ion-card
         *ngIf="statusFilter === 'semua' || transaksi.order.status_order?.toLowerCase() === statusFilter"
         class="pesanan-card"
@@ -56,14 +104,20 @@
             <span class="harga-total">Rp {{ transaksi.total_harga | number:'1.0-0' }}</span>
           </div>
 
-          <div class="aksi-icons">
+          <!-- <div class="aksi-icons">
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
             <ion-icon name="eye-outline"></ion-icon>
-          </div>
-
-          <ion-button size="small" fill="outline" (click)="editMeja(transaksi)">
+          </div> -->
+          
+          <ion-button *ngIf="transaksi.status_pembayaran === 'belum'" size="small" fill="outline" (click)="setBuktiModal(i)">
             <ion-icon name="create-outline" slot="start"></ion-icon>
-            Edit Meja
+            Edit Status Pembayaran
+          </ion-button>
+          
+          
+          <ion-button *ngIf="transaksi.order.status_order === 'sudah dibuat'" size="small" fill="outline" (click)="finishOrder(i)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Finish Order
           </ion-button>
         </ion-card-content>
       </ion-card>

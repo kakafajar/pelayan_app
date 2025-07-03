@@ -218,7 +218,7 @@ export class MenuPage implements OnInit {
       });
 
       const toast = await this.toastController.create({
-        message: 'Pesanan berhasil dikirim! Order #001235 telah masuk ke dapur.',
+        message: 'Pesanan berhasil dikirim! Order '+ transaksi.kode_transaksi +' telah masuk ke dapur.',
         color: 'success',
         duration: 3000,
         position: 'top',
@@ -230,7 +230,7 @@ export class MenuPage implements OnInit {
       this.singletonService.temps = {
         lastTransaksi : transaksi
       }
-      this.router.navigate(['/konfirmasi']);
+      this.router.navigate(['/pesanan']);
     }
     catch(error:any){
       alert(error);
