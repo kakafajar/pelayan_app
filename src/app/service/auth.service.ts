@@ -16,7 +16,8 @@ export class AuthService {
   {
     return this.http.post(this.singleton.apiUrl+"/api/login", {
       "email" : email,
-      'password' :password
+      'password' :password,
+      "expect_roles" : ['pelayan']
     });
   }
 
