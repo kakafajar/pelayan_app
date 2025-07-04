@@ -10,7 +10,8 @@ export class SingletonService {
 
     public get_header(){
         return new HttpHeaders({
-            "Authorization" : "Bearer " + localStorage.getItem("token")
+            "Authorization" : "Bearer " + localStorage.getItem("token"),
+            "Access-Control-Allow-Origin" : "*"
         });  
     }
 

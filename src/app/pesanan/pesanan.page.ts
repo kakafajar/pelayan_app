@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal, PopoverController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -29,6 +29,7 @@ export class PesananPage {
   scannedTransaksiId:any;
 
   constructor(
+    private ngZone:NgZone,
     private alertController: AlertController,
 
     private authService:AuthService,
@@ -37,26 +38,29 @@ export class PesananPage {
     private orderService:OrderService,
     private reservasiService:ReservasiService,
     private singletonService:SingletonService
+    
   ){}
 
   ionViewWillEnter(){
     this.scannedTransaksiId = null;
     this.transaksiList =[];
-    this.transaksiService.all()
-    .subscribe(response=>{
-      this.transaksiList.push(...response.data.reverse());
-      
-      if (this.singletonService.temps["transaksi_id"]){
-        this.scannedTransaksiId = this.singletonService.temps['transaksi_id'];
-        this.singletonService.clearTemps();
-        setTimeout(() => {
-          try{
-            document.querySelector("#transaksi"+this.scannedTransaksiId)?.scrollIntoView({
-              behavior: 'smooth'
-            });
-          }catch (err){console.log(err)}
-        }, 200);
-      }
+    this.ngZone.run(()=>{
+      this.transaksiService.all()
+      .subscribe(response=>{
+        this.transaksiList.push(...response.data.reverse());
+        
+        if (this.singletonService.temps["transaksi_id"]){
+          this.scannedTransaksiId = this.singletonService.temps['transaksi_id'];
+          this.singletonService.clearTemps();
+          setTimeout(() => {
+            try{
+              document.querySelector("#transaksi"+this.scannedTransaksiId)?.scrollIntoView({
+                behavior: 'smooth'
+              });
+            }catch (err){console.log(err)}
+          }, 200);
+        }
+      })
     })
   }
 
