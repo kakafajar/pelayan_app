@@ -9,7 +9,7 @@ export class TransaksiService extends ApiService {
     protected override apiTable: string = "transaksis";
 
     override all(): Observable<any> {
-      return this.http.get(this.singleton.apiUrl+"/api/transaksis/today/", 
+      return this.http.get(this.singleton.apiUrl+"/api/transaksis/today/get/", 
         {headers : this.singleton.get_header()}
       );
     }
