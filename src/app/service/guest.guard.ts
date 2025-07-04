@@ -22,11 +22,11 @@ export class GuestGuard implements CanActivate, CanActivateChild{
         await lastValueFrom(this.authService.checkToken())
         .then(response=>{
             result=true;
-        }).catch(error=>{result = false});
-
+        }).catch(error=>{result = false;});
+        
         if (result){
             this.router.navigate(['/home']);
         }
-        return result;
+        return ! result;
     }
 }
