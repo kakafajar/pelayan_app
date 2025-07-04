@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SingletonService {
-    public apiUrl:string = "http://localhost:8000";
+    public apiUrl:string = "https://trihar.my.id";
     public temps:any ={};
 
     public get_header(){
